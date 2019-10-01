@@ -1217,9 +1217,9 @@ Tables
 7. Разница между range() и xrange()
 8. Минимальное значение в листе
 9. Удалить повторяющиеся элементы в листе
-10. str.split()
+10. str.split() 
 11. Mutable and immutable types
-12. Менеджеры контекста
+12. Менеджеры контекста (сраный with)
 13. Итераторы и генераторы
 14. yield
 15. lambda functions
@@ -1237,3 +1237,7 @@ Tables
 27. Metaclasses
 28. Функция type()
 
+- list comprehantion
+- slice [-1, 2, 10]
+- наследование --> плохо ? 
+- singletone
