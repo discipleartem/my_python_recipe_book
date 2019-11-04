@@ -1,0 +1,257 @@
+Django 2.xx
+
+=========================================================
+How to DEBUG
+
+    #показывает все доступные методы объекта
+    print(dir(object))
+
+    #переопределяем метод str
+
+    def __str__(self):
+        return '{}'.format(self.title)
+=========================================================
+
+1) создаем вирт. окружение
+    - virtualenv venv
+    - source venv/bin/activate
+    после source venv/bin/deactivate
+
+2) устанавливаем django
+    - pip install django
+    (убедись что pip версии 3.хх , а не для версии python2)
+
+3) pip freze  проверь версию django
+
+
+4) создай основную корневую папку проэкта
+    - mkdir app
+    - перейди туда
+
+5) создай приложение для блога/постов/бота/ каждое отдельно
+    (модульность - это один из принципов django)
+
+    - django-admin startproject blogengine
+    (команда работает только в папке с файлом manage.py)
+
+MVC фреймворк, но
+
+Controller == views.py
+
+
+
+6) запуск виртуального сервера только в папке с файлом manage.py
+
+    - ./manage.py runserver 5000
+    (по умолчанию порт http://localhost:5000/ или
+                       http://127.0.0.1:5000/  )
+
+7) Приминение миграций
+
+    1) инициализация при создании проекта
+
+         ./manage.py migrate
+
+    2) Создание миграции
+
+         ./manage.py makemigrations
+
+    3) Приминение миграции
+
+        ./manage.py migrate
+
+8) маршрутизация запросов в корневой папке файле проекта / имя корневой папки / файл urls.py
+
+    Пример:
+
+    from .views import hello
+
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        # path принимает 4 свойства:
+        # 2 обязательных: путь url 'blog/' и фун-я обработки запроса "hello"
+        # и 2 дополнительных свойства: имя url (ЧПУ/#тег) и др. параметры
+        path('blog/', hello)
+    ]
+
+в path можно прописать путь на другой файл urls.py в котором будет отдельная маршрутизация
+для этого нужно внести изменения в файл, импортировать библиотеку "include" строчкой
+" from django.urls import include ":
+
+
+# from .views import hello
+from django.urls import include
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # path('blog/', hello),
+    path('blog/', include('blog.urls'))
+]
+
+и создлать файл urls.py в папке blog и произвести импорт и внести правки
+
+    from django.urls import path
+    from .views import *
+
+    urlpatterns =[
+        path('', post_list)                # '' потому что это адрес /blog
+
+    ]
+
+и в файле /blog/views.py  прописать фун-ю обработки post_list
+
+
+
+
+9) там же нужно создать файл views.py и обработать запрос
+
+from django.http import HttpResponse
+
+
+
+def hello(request):
+    return HttpResponse('<h1>Hello world</h1>')
+
+
+/blog/views.py
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def posts_list(request):
+    return HttpResponse('<h1>Hello world</h1>)
+
+
+# после создания html страницы файл /blog/views.py должен выглядеть примерно так:
+
+
+from django.shortcuts import render
+
+
+# Create your views here.
+
+def posts_list(request):
+    return render(request, 'blog/index.html')
+
+
+
+10) там же в файле settings.py нужно прописать подключение наших приложений (модулей)
+
+
+# Application definition
+
+INSTALLED_APPS = [
+    '...',
+    'blog'
+
+]
+
+
+HTML шаблоны храняться в папке приложения в папке templates/<имя_приложения>
+blog/templates/blog
+
+потому что потом при deploy django соберет ВСЕ шаблоны в одну папку и может быть конфликт имен,
+по этому все шаблоны должны находиться в своих папках приложений (модулей)
+
+
+Работа с переменными в blog/index.html
+
+для начала нужно написать код в /blog/views.py
+
+def posts_list(request):
+    n = 'artemka'
+    return render(request, 'blog/index.html', context={'name': n})
+
+
+context={'name': n} - создает словарь из которого береться только КЛЮЧ
+# словарь = ассоциативный масив "ключ : значение"
+
+в во вьюхе blog/index.html вставляеться с помощью {{ name }} скобок.
+
+цикл и прочие функции в таких скобках  {% %}
+
+Для того, чтобы небыло повторений в html-страницах придумали наследование шаблонов.
+Для этого нужно создать основной шаблон и с помощью
+
+{% block %}
+
+{% endblock %}
+
+указать блоки кода, которые будут меняться. Главное прописать в дочерних страницах наследование
+
+{% extends 'blog/base_blog.html' %}
+
+
+Но, это наследование html-шаблона работает только внутри одного КОНКРЕТНОГО приложения (модуля).
+    Для того, чтобы расширить базовый шаблон странички на ВСЕ приложения, нужно:
+    - создать в КОРНЕ (там где файл manage.py) папку templates
+    - в основной папке проекта в файле settings.py
+        в разделе TEMPLATES = [
+
+        прописать:
+        'DIRS': [
+
+            os.path.join(BASE_DIR, 'templates')
+        ],
+
+        что позволит подключить его ко всему проекту
+
+
+Консоль Django
+
+    ./manage.py shell
+
+
+
+Работа с Моделями
+
+
+
+
+Переопределение стандартного метода класса позволяет выводить значение данных в консоль при его вызове,
+вместо того, чтобы ссылатся на ячейку памяти
+
+    def __str__(self):
+        return '{}'.format(self.title)
+
+
+
+Сохранять Модели можно через метод
+
+    <MyModel>.objects.save
+
+но при создании лучше через
+
+    <MyModel>.objects.create
+
+Поиск по свойству/атрибуту
+
+<MyModel>.objects.get(slug='new-slug')  но get чувствителен к регистру и ищет только совпадение по 1му объекту, если их 2 и более - то выдаст ошибку
+
+лучше использовать поиск через надстройку <свойство/атрибут>__iexact ("i" = insensative; "exact" = exactly)
+
+<MyModel>.objects.get(slug__iexact='NeW-SlUg')
+
+для поиска более одного объекта, нужно использовать
+
+<MyModel>.objects.filter
+
+для поиска по ключевому значению/слову нужно использовать такую конструкцию
+
+<MyModel>.objects.filter(slug__contains='new')
+
+остальной перечень в документации по Django
+
+
+При работе с Моделями нужно помнить что их нужно импортировать каждый раз в нужный нам файл, особонно
+в Контроллеры views.py
+
+from .models import Post
+
+
+
+31:22 урок 4
