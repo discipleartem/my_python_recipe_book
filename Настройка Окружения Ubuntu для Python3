@@ -225,6 +225,7 @@ Preferances --> Settings --> User
 
 sudo apt-get install -y git curl 
 wait /
+# или git config --global --replace-all
 git config --global user.name "Your Name"
 wait /
 git config --global user.email "your.email@example.com"
@@ -304,13 +305,17 @@ wait /
             git push origin master
 
             ----------------------------------------------------------------
-            !!! Если же вы решили создать README и/или добавить лицензю на гитхабе, то
+            !!! Если же вы решили создать README и/или добавить лицензю на гитхабе или вы успели локально изменить файлы проэкта, то
             не забудьте выполнить такую последовательность работы с гитом:
 
            - переходим в папку проэкта
            - git init
            - git remote add origin git@github.com:ник_на_гитХабе/имя_приложения_созданого_на_ГитХабе_с_лицензией_и_РидМи.git
            - git pull origin master - копирует лицензю и README в локальную папку
+
+           * при ошибке "fatal: refusing to merge unrelated histories"
+           		git pull origin master --allow-unrelated-histories
+
            - продолжаем писать код и создавать файлы в локальной папке и коммитить на ГитХаб
 
 =====================================================================================================================
