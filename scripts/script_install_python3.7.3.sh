@@ -10,13 +10,13 @@
 user=$USER
 
 # sudo -H pip3 install virtualenv 
-sudo apt-get install -y python3-venv
+sudo apt-get install python3.7-venv
 wait
 
-python3 -m venv env
+python3.7 -m venv venv
 wait
 
-source /home/user/work/venv/bin/activate 
+source ./venv/bin/activate 
 wait
 
 sudo -H apt-get install python3-pip
