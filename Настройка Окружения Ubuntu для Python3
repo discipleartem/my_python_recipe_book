@@ -1,6 +1,6 @@
 Настройка Окружения Ubuntu для Python3
 
-=======================Sound=====================================================
+======================= Sound (Headphones) начиная с Ubuntu 18 =====================================================
 
 0. Звук и его настройка
 
@@ -11,14 +11,11 @@
 
     amixer | grep mixer
 
-    создать файл-скрипт:
-    sudo gedit /home/$USER/turn_on_sound.sh
-
-#!/bin/sh
-sleep 10 && amixer -c 0 set Headphone 100% unmute && amixer -c 0 set 'Front Mic' 100% unmute && amixer -c 0 set 'Front Mic Boost' 40% && amixer -c 0 set 'Rear Mic' 100% unmute && amixer -c 0 set 'Rear Mic Boost' 40%
-
-sudo chmod 755 /home/$USER/turn_on_sound.sh
+использовать готовый скрипт для исправления звука наушников и микрофона
 =======================Sound=====================================================
+
+
+
 
 
 =======================Google Chrome=====================================================
@@ -32,7 +29,9 @@ rm -rf /home/$USER/.config/google-chrome
 
 =======================SUMLIMETEXT3=====================================================
 
+Теперь можно установить и через магазин Ubuntu (Ubuntu Software)
 
+---------------------------------------------------------------------------------------------------------------------------------
 1. Прежде всего я устанавливаю текстовый редактор кода Sublime3 (вы можете использовать vim, atom, или IDE PyCharm и т.д.)
     https://www.sublimetext.com/docs/3/linux_repositories.html
 
@@ -57,7 +56,7 @@ rm -rf /home/$USER/.config/google-chrome
         sudo apt-get update
         sudo apt-get install sublime-text
 
-
+---------------------------------------------------------------------------------------------------------------------------------
 2. Настройка/устанеовка тем Sublime3
 
 
@@ -78,7 +77,8 @@ rm -rf /home/$USER/.config/google-chrome
 
 
     https://github.com/dempfi/ayu
-    в Pference --> Package Control -> (или Contrl + Shift + P) Install Package  ayu
+    в Pference --> Package Control -> (или Contrl + Shift + P) Install Package  
+    - ayu (набор тем)
 
 
 
@@ -92,21 +92,52 @@ rm -rf /home/$USER/.config/google-chrome
 
             emmet
             ("Ctrl + Shift + G" при выделении верхнего тега, который нам нужно обернуть позволяет это сделать в 10 раз быстрее)
-            Сцуко tab в emmet НЕ работает. А Если забиндить tab то он не будет делать отступы при выделенном коде. Значит нужно забиндить на ctrl+1 в Preference --> key bindings --> user
+            Сцуко tab в emmet НЕ работает. А Если забиндить tab то он не будет делать отступы при выделенном коде. Значит нужно забиндить 
+            на ctrl+1 (цифра) в Preference --> key bindings --> user
+
+
+
+            html5
+            css3
+            GitGutter (подсветка git)
+            BracketHighlighter (для одновременного открытия/закрытия тегов и т.д.)
+            AllAutocomplete (завершает текст)
+            AutoFileName (Автозаполнение путей к подключаемым файлам)
+            ColorPicker (Ctrl/Cmd + Shift + C вызывает програмку цвета)
+            
+
+            #можно и Colorcoder (но с темой ayu не совместим)
+            (Разукрашивает все переменные, тем самым значительно упрощая ориентацию в коде. Особенно полезно для разработчиков с дислексией)
+
+            LiveReload (автообновление страницы браузера при сохранении кода). После установки заходим Preferances --> Package Settings --> LiveReload --> Plugins --> Enable/disable plugins --> выбираем Simple reload
+
+
+
+            и дописать в настройки:
+            Preferances --> Package Settings --> LiveReload --> Settings default
+                    {
+                       "enabled_plugins": [
+                           "SimpleReloadPlugin",
+                           "SimpleRefresh"
+                       ]
+                    }
+
+            и установить расширение для браузера (у меня Chrome) LiveReload и в настройках рашерения поставить галку на "Allow access to file URLs"
+
+            !!! главное не забыть нажать на иконку плагина чтобы он начал работать
+            должно работать
+------------------------------------------------------------------------------------------------------------------------
+Настройка Key Bindings
 
 [
 {
     "keys": ["ctrl+0"],
     "command": "repl_open",
-    "args":
-    {
+    "args":{
         "cmd": ["../venv/bin/python", "-u", "$file_basename"],
         "cwd": "$file_path",
         "encoding": "utf8",
-        "extend_env":
-        {
-            "PYTHONIOENCODING": "utf-8"
-        },
+        "extend_env":{"PYTHONIOENCODING": "utf-8"},
         "external_id": "python",
         "syntax": "Packages/Python/Python.tmLanguage",
         "type": "subprocess"
@@ -131,53 +162,35 @@ rm -rf /home/$USER/.config/google-chrome
 {
     "keys": ["ctrl+3"],
     "command": "insert", "args": {"characters": "{% block %}\n\n{% endblock %}"}
-}]
+},
+{
+    "keys": [
+        "ctrl+4"
+    ], 
+    "command": "wrap_as_you_type", 
+    "context": [
+        {
+            "operand": false, 
+            "operator": "equal", 
+            "match_all": true, 
+            "key": "setting.is_widget"
+        }, 
+        {
+            "match_all": true, 
+            "key": "emmet_action_enabled.wrap_as_you_type"
+        }
+    ]
+} 
+]
 
+------------------------------------------------------------------------------------------------------------------------
 
-            html5
-            css3
-            GitGutter (подсветка git)
-            BracketHighlighter (для одновременного открытия/закрытия тегов и т.д.)
-            AllAutocomplete (завершает текст)
-            AutoFileName (Автозаполнение путей к подключаемым файлам)
-            ColorPicker (Ctrl/Cmd + Shift + C вызывает програмку цвета)
-            
-            JAVASCRIPT & NODEJS SNIPPETS
-            ADVANCED NEW FILE
+        Альтернатива Sublimу есть редактор Brackets c функцией автообновления страницы браузера
+        (через .deb пакет у меня не устанавливалось)
 
-            ApplySyntax — налету определяет синтаксис в текущем файле.
-
-            #можно и Colorcoder (Разукрашивает все переменные, тем самым значительно упрощая ориентацию в коде. Особенно полезно для разработчиков с дислексией)
-
-
-
-
-
-            LiveReload (автообновление страницы браузера при сохранении кода). После установки заходим Preferances --> Package Settings --> LiveReload --> Plugins --> Enable/disable plugins --> выбираем Simple reload
-
-
-
-            и дописать в настройки:
-            Preferances --> Package Settings --> LiveReload --> Settings default
-                    {
-                       "enabled_plugins": [
-                           "SimpleReloadPlugin",
-                           "SimpleRefresh"
-                       ]
-                    }
-
-            и установить расширение для браузера (у меня Chrome) LiveReload и в настройках рашерения поставить галку на "Allow access to file URLs"
-
-            !!! главное не забыть нажать на иконку плагина чтобы он начал работать
-            должно работать
-
-            ---------------------------------------------------------------------------
-            Альтернатива Sublimу есть редактор Brackets c функцией автообновления страницы браузера
-            (через .deb пакет у меня не устанавливалось)
-
-            sudo add-apt-repository ppa:webupd8team/brackets
-            sudo apt-get update
-            sudo apt-get install brackets
+        sudo add-apt-repository ppa:webupd8team/brackets
+        sudo apt-get update
+        sudo apt-get install brackets
 
 
 =========================================================
@@ -219,41 +232,28 @@ Preferances --> Settings --> User
 5. Ставим git
 
 =========================   GIT SCRIPT    ================================================
+
 #!/bin/bash
 # права на выполнение
 # chmod a+x ./script_install_git.sh
 
 sudo apt-get install -y git curl 
-wait /
+wait
 # или git config --global --replace-all
 git config --global user.name "Your Name"
-wait /
+wait
 git config --global user.email "your.email@example.com"
-wait /
+wait
 git config --global core.autocrlf input
-wait /
+wait
 
 
 =========================   /GIT SCRIPT    ================================================
 
-                #(curl на всякий случай)
-        - sudo apt-get install git curl
 
+        autocrlf true – git при каждом коммите будет преобразовывать CRLF в LF и наоборот при чтении из репозитория. Таким образом в репозитории будет православный LF а пользовательский редактор будет получит CRLF. Это сделано специально для Windows пользователей.
 
-        Если забыли команды - смотрим на сайте http://overapi.com/
-
-        1) Настраиваем юзера гита:
-            - git config --global user.name "Your Name"
-            - git config --global user.email "your.email@example.com"
-
-        Не забывайте менять юзера, когда работаете на другом компе и если комп общий
-
-            - git config --global core.autocrlf input
-
-
-            autocrlf true – git при каждом коммите будет преобразовывать CRLF в LF и наоборот при чтении из репозитория. Таким образом в репозитории будет православный LF а пользовательский редактор будет получит CRLF. Это сделано специально для Windows пользователей.
-
-            autocrlf input – git при каждом коммите будет преобразовывать CRLF в LF, но при чтении из репозитория выдаст всё как есть в оригинале. Эта опция для тех, у кого редактор нормально воспринимает оба окончания строки, но хочет содержать репозиторий в едином формате. Эта опция рекомендуется для линуксоидов.
+        autocrlf input – git при каждом коммите будет преобразовывать CRLF в LF, но при чтении из репозитория выдаст всё как есть в оригинале. Эта опция для тех, у кого редактор нормально воспринимает оба окончания строки, но хочет содержать репозиторий в едином формате. Эта опция рекомендуется для линуксоидов.
 
 
         2) создание SHH ключа:
@@ -267,9 +267,9 @@ wait /
         4) файл .gitignore -прописываются исключения (папки, файлы), которые не добавляються в гит
 
 
-/*
 
-        например:
+
+    например:
 
         /public/images
         /db
@@ -284,7 +284,8 @@ wait /
         /log/*.log
         /tmp
 
-*/
+
+
         5) Работаем с готовым репозиторием
              - git clone git@github.com:ник_на_гитХабе/название _репы.git - клонируем на локальный комп, и только потом работаем.
 
