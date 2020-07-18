@@ -161,7 +161,7 @@ rm -rf /home/$USER/.config/google-chrome
 },
 {
     "keys": ["ctrl+3"],
-    "command": "insert", "args": {"characters": "{% block %}\n\n{% endblock %}"}
+    "command": "insert", "args": {"characters": "{% block content %}\n\n{% endblock %}"}
 },
 {
     "keys": [
